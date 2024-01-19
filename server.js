@@ -24,17 +24,6 @@ const applicationsCtrl = require('./controllers/applications')
 const app = express();
 
 
-/* Configure the app to refresh the browser when nodemon restarts
---------------------------------------------------------------- */
-const liveReloadServer = livereload.createServer();
-liveReloadServer.server.once("connection", () => {
-    // wait for nodemon to fully restart before refreshing the page
-    setTimeout(() => {
-        liveReloadServer.refresh("/");
-    }, 100);
-});
-
-
 /* Configure the app (app.set)
 --------------------------------------------------------------- */
 app.set('view engine', 'ejs');
@@ -43,8 +32,21 @@ app.set('views', path.join(__dirname, 'views'));
 
 /* Middleware (app.use)
 --------------------------------------------------------------- */
+// Detect if running in a dev environment
+if (process.env.ON_HEROKU === 'false') {
+    // Configure the app to refresh the browser when nodemon restarts
+    const liveReloadServer = livereload.createServer();
+    liveReloadServer.server.once("connection", () => {
+        // wait for nodemon to fully restart before refreshing the page
+        setTimeout(() => {
+            liveReloadServer.refresh("/");
+        }, 100);
+    });
+    app.use(connectLiveReload());
+}
+
+
 app.use(express.static('public'));
-app.use(connectLiveReload());
 // Body parser: used for POST/PUT/PATCH routes:
 // this will take incoming strings from the body that are URL encoded and parse them
 // into an object that can be accessed in the request parameter as a property called body (req.body).
@@ -66,17 +68,19 @@ app.get('/about', function (req, res) {
     res.render('about')
 });
 
-// When a GET request is sent to `/seed`, the pets collection is seeded
-app.get('/seed', async (req, res) => {
-    // Remove any existing pets
-    const formerPets = await db.Pet.deleteMany({})
-    console.log(`Removed ${formerPets.deletedCount} pets`)
-    // Seed the pets collection with the starter data
-    const newPets = await db.Pet.insertMany(db.seedPets)
-    console.log(`Added ${newPets.length} pets to be adopted`)
-    // Send a JSON response to the user of all the new pet documents
-    res.json(newPets)
-})
+if (process.env.ON_HEROKU === 'false') {
+    // When a GET request is sent to `/seed`, the pets collection is seeded
+    app.get('/seed', async (req, res) => {
+        // Remove any existing pets
+        const formerPets = await db.Pet.deleteMany({})
+        console.log(`Removed ${formerPets.deletedCount} pets`)
+        // Seed the pets collection with the starter data
+        const newPets = await db.Pet.insertMany(db.seedPets)
+        console.log(`Added ${newPets.length} pets to be adopted`)
+        // Send a JSON response to the user of all the new pet documents
+        res.json(newPets)
+    })
+}
 
 // This tells our app to look at the `controllers/pets.js` file 
 // to handle all routes that begin with `localhost:3000/pets`
