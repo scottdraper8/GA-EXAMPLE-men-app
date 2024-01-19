@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../partials/head.ejs', {title: `${pet.name} | Furever Friends`}) %>
+    <link rel="stylesheet" href="/styles/pet-details.css">
+</head>
+
+<body>
+    <%- include('../partials/nav.ejs') %>
+
+    <div>
+        <img src="<%= pet.photo %>">
+
+        <h2 class="pet-name"><%= pet.name %></h2>
+
+        <section>
+            <p><strong>Age:</strong> <%= pet.age %></p>
+            <p><strong>Breed:</strong> <%= pet.breed %></p>
+            <p><strong>Species:</strong> <%= pet.species %></p>
+            <p><strong>Location:</strong> <%= `${pet.city}, ${pet.state}` %></p>
+            <p><strong>Description:</strong> <%= pet.description %></p>
+        </section>
+
+        <section class="actions">
+            <button class="btn"><a href="/pets/<%= pet._id %>/edit">Edit</a></button>
+            <button class="btn"><a href="/applications/new/<%= pet._id %>">Adopt</a></button>
+            <form method="POST" action="/pets/<%= pet._id %>?_method=DELETE">
+                <input class="btn" type="submit" value="Delete" />
+            </form>
+        </section>
+    </div>
+
+    <%- include('../partials/footer.ejs') %>
+</body>
+
+</html>

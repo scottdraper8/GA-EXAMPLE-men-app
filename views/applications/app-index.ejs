@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../partials/head.ejs', {title: 'My Applications | Furever Friends'}) %>
+    <link rel="stylesheet" href="/styles/pet-index.css">
+</head>
+
+<body>
+    <%- include('../partials/nav.ejs') %>
+
+    <main>
+        <section class="listings">
+            <ul>
+                <% for (let app of apps) { %>
+                <li>
+                    <h4><%= app.applicantName %> - <%= app.applicantEmail %></h4>
+                    <p>Created: <%= app.applicationDate %></p>
+                    <a href="/applications/<%= app._id %>">Read More</a>
+                </li>
+                <% } %>
+            </ul>
+        </section>
+    </main>
+
+    <%- include('../partials/footer.ejs') %>
+</body>
+
+</html>

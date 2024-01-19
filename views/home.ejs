@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('./partials/head.ejs', {title: 'Furever Friends'}) %>
+    <link rel="stylesheet" href="/styles/home.css">
+</head>
+
+<body>
+    <%- include('./partials/nav.ejs') %>
+
+    <main>
+        <section class="hero">
+            <h2>Find Your New Best Friend</h2>
+            <a href="/pets" class="btn">Adopt Now!</a>
+        </section>
+
+        <section class="about">
+            <h2>About Us</h2>
+            <p>Furever Friends is a non-profit organization dedicated to finding loving homes for animals in need. We
+                work with shelters and rescue groups across the country to help connect pets with their new families.
+            </p>
+            <a href="/about" class="btn">Learn More</a>
+        </section>
+
+        <section class="featured-pets">
+            <h2>Featured Pets</h2>
+            <ul class="pet-grid">
+                <% for (let pet of pets) { %>
+                <li>
+                    <figure>
+                        <img src="<%= pet.photo %>" alt="Kitten">
+                    </figure>
+                    <figcaption>
+                        <div class="featured-info">
+                            <h3><%= pet.name %></h3>
+                            <p>Age: <%= pet.age %> yr(s)</p>
+                        </div>
+                        <a href="/pets/<%= pet._id %>" class="btn">Learn More</a>
+                    </figcaption>
+                </li>
+                <% } %>
+            </ul>
+        </section>
+    </main>
+
+    <%- include('./partials/footer.ejs') %>
+</body>
+
+</html>

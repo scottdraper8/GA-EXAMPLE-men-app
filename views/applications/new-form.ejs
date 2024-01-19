@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../partials/head.ejs', {title: 'Create an Application | Furever Friends'}) %>
+    <link rel="stylesheet" href="/styles/pet-form.css">
+</head>
+
+<body>
+    <%- include('../partials/nav.ejs') %>
+
+    <section class="hero">
+        <h2>Adoption Application</h2>
+        <h4><i>You're applying to adopt <a href="/pets/<%= pet._id %>"><%= pet.name %></a></i></h4>
+    </section>
+
+    <form action="/applications/create/<%= pet._id %>" method="POST">
+        <label for="applicantName">Applicant Name:</label><br>
+        <input type="text" id="applicantName" name="applicantName" required><br>
+
+        <label for="applicantEmail">Applicant Email:</label><br>
+        <input type="email" id="applicantEmail" name="applicantEmail" required><br>
+
+        <label for="applicantPhone">Applicant Phone:</label><br>
+        <input type="tel" id="applicantPhone" name="applicantPhone" required><br>
+
+        <label for="reasonForAdoption">Reason for Adoption:</label><br>
+        <textarea id="reasonForAdoption" name="reasonForAdoption" required></textarea><br>
+
+        <label for="ownedPets">Number of Owned Pets:</label><br>
+        <input type="number" id="ownedPets" name="ownedPets" min="0" value="0"><br>
+
+        <input type="submit" value="Submit">
+    </form>
+
+    <%- include('../partials/footer.ejs') %>
+</body>
+
+</html>

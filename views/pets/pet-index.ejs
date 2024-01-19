@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../partials/head.ejs', {title: 'Furever Friends'}) %>
+    <link rel="stylesheet" href="/styles/pet-index.css">
+</head>
+
+<body>
+    <%- include('../partials/nav.ejs') %>
+
+    <section class="hero">
+        <h2>Available Pets</h2>
+        <h3>Will you be the forever home and provide love to one of these special animals?</h3>
+    </section>
+
+    <main>
+        <section class="listings">
+            <ul>
+                <% for (let pet of pets) { %>
+                <li>
+                    <figure>
+                        <img src="<%= pet.photo %>">
+                        <figcaption>
+                            <h4><%= pet.name %></h4>
+                            <p><%= pet.breed %>, <%= pet.age %> year(s) old, <%= pet.state %></p>
+                            <a href="/pets/<%= pet._id %>">Learn More</a>
+                        </figcaption>
+                    </figure>
+                </li>
+                <% } %>
+            </ul>
+        </section>
+    </main>
+
+    <%- include('../partials/footer.ejs') %>
+</body>
+
+</html>
